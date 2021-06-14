@@ -2,13 +2,13 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: user-service-app
-  labels:
+  labels: 
     app: user-service-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app : user-service-app
+      app: user-service-app
   template:
     metadata:
       labels:
@@ -16,20 +16,23 @@ spec:
     spec:
       containers:
       - name: user-service-app
-        image: soodneeraj/user-service:0.0.2
+        image: soodneeraj/user-service:0.0.1
         imagePullPolicy: Always
         ports:
-          - containerPort: 9004
-
+        - containerPort: 9004
+        
 ---
-
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
-  name:  user-service-svc
+  name: user-service-svc
+  labels:
+    app: user-service-svc
 spec:
-  selector:
-    app:  user-service-app
+  type: ClusterIP
   ports:
-  - port:  80
-    targetPort:  9004
+  - port: 80
+    targetPort: 9004
+    protocol: TCP
+  selector:
+    app: user-service-app        
